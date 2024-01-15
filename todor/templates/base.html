@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoList - {% block title %}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body> <!--                         -lg es resposivo cuando la ventana esta por la mitad-sm se ve uno al lado de otro cuadno la ventana esta a la mitad-->  
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark" data-bs-theme="dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{{url_for('index')}}">TodoList</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <!-- que los items registra e iniciar sesion se ubiquen al costado der: justify-content-end-->
+          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+              #si el usuario existe e inicio sesion:
+              {% if g.user %}
+              <li class="nav-item">       <!--primero activo el blueprint en auth-->
+                <span class="nav-link active"> {{ g.user.username }} </span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('todo.index')}}">Tareas</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('auth.logout')}}">Cerrar Sesión</a>
+              </li>
+              #si el usuario no existe
+              {% else %}
+              <li class="nav-item">       <!--primero el blueprint: auth-->
+                <a class="nav-link" href="{{url_for('auth.register')}}">Registrarse</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('auth.login')}}">Iniciar Sesión</a>
+              </li>
+              {% endif %}
+
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      {% block content %}
+      {% endblock %}
+
+      {% for massage in get_flashed_messages() %}
+      <div class="container mt-3">
+        <div class="row">
+          <div class="col-md-6 mx-auto">
+            <div class="alert alert-danger" role="alert">
+                {{ massage }}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
